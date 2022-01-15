@@ -5,7 +5,6 @@ import datetime
 import time
 from datetime import timezone
 from sklearn.model_selection import train_test_split
-import torch
 
 df = pd.read_csv(f"dataset/Earthquake_Predictions.csv")
 
@@ -21,6 +20,7 @@ def unix_timestamp(given_date):
     r_sec = (given_date - unix_date).seconds
     unix_time = (r_days * 86400) + r_sec
     return unix_time
+
 
 i = 1
 for d, t in zip(df['Date'], df['Time']):
@@ -57,3 +57,8 @@ y = final_df[['Magnitude', 'Depth']]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 print(X_train.shape, X_test.shape, y_train.shape, X_test.shape)
+
+np.save("dataset/X_train", X_train)
+np.save("dataset/X_test", X_test)
+np.save("dataset/y_train", y_train)
+np.save("dataset/y_test", y_test)
