@@ -5,6 +5,7 @@ import datetime
 import time
 from datetime import timezone
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler
 
 df = pd.read_csv(f"dataset/Earthquake_Predictions.csv")
 
@@ -54,6 +55,15 @@ print(final_df.head())
 
 X = final_df[['Timestamp', 'Latitude', 'Longitude']]
 y = final_df[['Magnitude', 'Depth']]
+
+X["Timestamp"] = MaxAbsScaler().fit_transform(np.array(X["Timestamp"]).reshape(-1,1))
+X["Latitude"] = MaxAbsScaler().fit_transform(np.array(X["Latitude"]).reshape(-1,1))
+X["Longitude"] = MaxAbsScaler().fit_transform(np.array(X["Longitude"]).reshape(-1,1))
+
+y["Magnitude"] = MinMaxScaler().fit_transform(np.array(y["Magnitude"]).reshape(-1,1))
+y["Depth"] = MinMaxScaler().fit_transform(np.array(y["Depth"]).reshape(-1,1))
+
+print(X, y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
 print(X_train.shape, X_test.shape, y_train.shape, X_test.shape)

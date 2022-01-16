@@ -8,8 +8,8 @@ import torch.optim as optim
 class Net(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1_input = nn.Linear(3, 32)
-        self.fc2_hidden = nn.Linear(32, 32)
+        self.fc1_input = nn.Linear(3, 16)
+        self.fc2_hidden = nn.Linear(16, 32)
         self.fc3_output = nn.Linear(32, 2)
 
     def forward(self, x):
@@ -17,7 +17,7 @@ class Net(nn.Module):
         x = F.relu(self.fc2_hidden(x))
         x = self.fc3_output(x)
 
-        return F.log_softmax(x, dim=1)
+        return F.softmax(x, 1)
 
 
 def squaredHingeLoss(t, y):
@@ -25,7 +25,7 @@ def squaredHingeLoss(t, y):
     right_side = 1 - dot_pro
     # print(right_side)
     zero = torch.tensor(0.0, dtype=torch.float32)
-    # print(zero)
+    # print(zero, right_side)
     hinge_loss = torch.maximum(input=zero, other=right_side)
     # print(hinge_loss)
     square_hinge_loss = torch.pow(input=hinge_loss, exponent=2)
@@ -53,10 +53,10 @@ if __name__ == "__main__":
     net = Net()
     print(net)
 
-    optimizer = optim.Adam(net.parameters(), lr=0.001)
+    optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.5)
 
-    EPOCHS = 50
-    loss = 0
+    EPOCHS = 10
+    loss = None
 
     for epochs in range(EPOCHS):
         for data in trainset:
@@ -64,6 +64,7 @@ if __name__ == "__main__":
             optimizer.zero_grad()
             # net.zero_grad()
             output = net(X.view(-1, 3))
+            # print(output, y)
             loss = squaredHingeLoss(t=output, y=y)
             # loss = F.mse_loss(input=y, target=output)
             loss.backward()
