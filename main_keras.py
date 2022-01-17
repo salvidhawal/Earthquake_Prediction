@@ -10,30 +10,29 @@ if __name__ == "__main__":
     model = tf.keras.models.Sequential()
 
     model.add(tf.keras.layers.Dense(64, activation="relu", input_shape=(3,)))
-    #model.add(tf.keras.layers.BatchNormalization())
+    # model.add(tf.keras.layers.BatchNormalization())
 
     model.add(tf.keras.layers.Dense(128, activation="relu"))
-    #model.add(tf.keras.layers.BatchNormalization())
+    # model.add(tf.keras.layers.BatchNormalization())
 
     model.add(tf.keras.layers.Dense(128, activation="relu"))
-    #model.add(tf.keras.layers.BatchNormalization())
+    # model.add(tf.keras.layers.BatchNormalization())
 
     model.add(tf.keras.layers.Dense(128, activation="relu"))
-    #model.add(tf.keras.layers.BatchNormalization())
-
-    model.add(tf.keras.layers.Dense(128, activation="relu"))
+    # model.add(tf.keras.layers.BatchNormalization())
 
     model.add(tf.keras.layers.Dense(128, activation="relu"))
 
     model.add(tf.keras.layers.Dense(128, activation="relu"))
+
+    model.add(tf.keras.layers.Dense(128, activation="relu"))
     model.add(tf.keras.layers.Dense(128, activation="relu"))
 
     model.add(tf.keras.layers.Dense(128, activation="relu"))
-
 
     model.add(tf.keras.layers.Dense(64, activation="relu"))
 
-    #model.add(tf.keras.layers.BatchNormalization())
+    # model.add(tf.keras.layers.BatchNormalization())
     model.add(tf.keras.layers.Dropout(0.25))
 
     model.add(tf.keras.layers.Dense(2, activation="linear"))
