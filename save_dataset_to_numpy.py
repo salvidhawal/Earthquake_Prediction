@@ -56,17 +56,38 @@ print(final_df.head())
 X = final_df[['Timestamp', 'Latitude', 'Longitude']]
 y = final_df[['Magnitude', 'Depth']]
 
-X["Timestamp"] = MaxAbsScaler().fit_transform(np.array(X["Timestamp"]).reshape(-1,1))
-X["Latitude"] = MaxAbsScaler().fit_transform(np.array(X["Latitude"]).reshape(-1,1))
-X["Longitude"] = MaxAbsScaler().fit_transform(np.array(X["Longitude"]).reshape(-1,1))
+#scaler = MaxAbsScaler()
+#scaler.fit(X)
+#X = scaler.transform(X)
 
-y["Magnitude"] = MinMaxScaler().fit_transform(np.array(y["Magnitude"]).reshape(-1,1))
-y["Depth"] = MinMaxScaler().fit_transform(np.array(y["Depth"]).reshape(-1,1))
+#X["Timestamp"] = MaxAbsScaler().fit_transform(np.array(X["Timestamp"]).reshape(-1,1))
+#X["Timestamp"] = X["Timestamp"] / 180.0
+
+column = X["Timestamp"]
+max_value = column.max()
+print(max_value)
+
+X["Timestamp"] = X["Timestamp"] / max_value
+X["Latitude"] = X["Latitude"] / 180
+X["Longitude"] = X["Longitude"] / 180
+
+#scaler = MinMaxScaler()
+#scaler.fit(y)
+#y = scaler.transform(y)
+
+column = y["Depth"]
+max_value = column.max()
+print(max_value)
+
+y["Magnitude"] = y["Magnitude"] / 10
+y["Depth"] = y["Depth"] / max_value
 
 print(X, y)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, shuffle=False)
 print(X_train.shape, X_test.shape, y_train.shape, X_test.shape)
+
+
 
 np.save("dataset/X_train", X_train)
 np.save("dataset/X_test", X_test)
